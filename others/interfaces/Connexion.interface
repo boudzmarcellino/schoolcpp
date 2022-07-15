@@ -1,0 +1,22 @@
+Interface : Connexion
+Resumé : Ce programme est la plateforme qui permet à un visiteur de pouvoir se connecter au système de l'établissement afin de pouvoir faire des opérations
+
+Composition:
+    login: 
+        - c'est l'email ou l'id d'enregistrement que doit saisir le visiteur
+    password:
+        - type [label text]
+        - c'est le mot de passe associé au login
+    valider :
+        - permet de soumettre le formulaire de connexion
+        - type[button]
+    annuler : 
+        - pour annuler la procédure de connexion
+        - type [button]
+    mot de passe oublié:
+        -  permet d'obtenir le lien de réinitialisation du mot de passe
+        - type [button]
+contrainte:
+    c1 : formulaire au centre
+    c2 : assurer une taille minimale pour l'interface
+

@@ -1,0 +1,23 @@
+src = src
+debug = debug
+obj = obj
+bin = bin
+qtheader = "/opt/6.3.1/gcc_64/include" 
+qtlib = "/opt/6.3.1/gcc_64/lib"
+library = -L $(qtlib) -l:libQt6DBus.so.6.3.1 -l:libQt6Gui.so.6.3.1 -l:libicudata.so.56.1 -l:libicuuc.so.56.1 -l:libicui18n.so.56.1 -l:libQt6Core.so.6.3.1 -l:libQt6Widgets.so.6.3.1
+
+all : main
+main :
+	@echo Compilation for main function
+	@g++ -S $(src)/main.cpp -I $(qtheader) -o $(debug)/main.s -fPIC
+	@echo Compilation for main function done
+	@echo Assembling for the main programme
+	@g++ -c $(debug)/main.s -o $(obj)/main.o
+	@echo Assembling done
+	@echo link editing 
+	@g++ obj/main.o -o exec $(library) -Wl,-rpath=$(qtlib)
+	@echo link editing done
+remove : 
+	@rm $(obj)/main.o 
+	@rm $(debug)/main.s 
+	@rm exec

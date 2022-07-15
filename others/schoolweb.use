@@ -1,0 +1,161 @@
+model schoolweb
+enum Niveau{licence1, licence2, licence, master1, master2, ingenieur1, ingenieur, doctorat, professorat}
+enum Genre{ordinaire, laboratoire, amphi}
+
+-- ENTITES-ASSOCIATION-CONTRAINTES
+
+
+class Departement
+    attributes
+        nom:String
+    operations
+        Departement()
+        choisirChefDepartement()
+        ajouterMembre()       
+end 
+
+class Formation
+    attributes
+        nom:String
+    operations
+end
+
+class Classe
+    attributes
+        idClasse:String
+        niveau:Niveau
+    operations
+        Classe()
+        listerEtudiant(idClasse:String)
+        listerMatiereProfesseur(idClasse)
+        voirEmploiDuTempsclass(idClasse)
+end
+
+class Matiere
+    attributes
+        nom:String
+        coeficient:Integer
+        controle:Real
+        examen:Real
+    operations
+        Matiere()
+end
+
+
+class Salle
+    attributes
+        nom:String
+        type:Genre
+        places:Integer
+    operations
+        Salle(nom:String, type:Genre, places:Integer)
+        disponibilites(nom, date:String)
+        disponibiles(nom, date1:String, date2:String)
+end
+
+class Professeur
+    attributes
+        nom:String
+        prenom:String
+        aEntree:Integer
+        grade:Niveau
+    operations
+        Professeur(nom:String, prenom:String, aEntree:Integer, grade:Niveau, specialite:String)
+        getNom():String
+        getPrenom():String
+        getGrade():Niveau
+        getAEntree():Integer
+        toString():String
+        proposerControle()
+        publierInformation()
+end
+
+class ChefDepartement<Professeur 
+    attributes
+        dateDebut:String
+        dateFin:String
+    operations
+        ChefDepartement(nom:String, prenom:String, aEntree:Integer, grade:Niveau, specialite:String, idDepartement:String, dateDebut:String, dateFin)
+        attribuerSalleFormation()
+end
+
+class ChefFormation<Professeur 
+    attributes
+        idFormation:String
+        dateDebut:String
+        dateFin:String
+    operations
+        ChefFormation(nom:String, prenom:String, aEntree:Integer, grade:Niveau, specialite:String, idFormation:String, dateDebut:String, dateFin)
+
+end
+
+class Etudiant
+    attributes
+        nom: String 
+        prenom:String
+        aEntree:Integer
+        nEntree:Niveau
+    operations
+        Etudiant(nom:String, prenom:String, aEntree:Integer, nEntree:Niveau)
+        getNom():String
+        getPrenom():String
+        getNEntree():Niveau
+        getAEntree():Integer
+        getOption():String
+        toString():String
+end
+
+class Validator
+-- ceci peut etre implementer par des contraintes
+end
+
+associationclass Cours between
+    Matiere[1..*] role mat
+    Classe[1..*] role etudiant
+    attributes
+        date:String
+        heureDebut:String
+        heureFin:String
+    operations
+end
+
+aggregation DepartementChefDepartement between
+    Departement[1] role departement
+    ChefDepartement[1] role chefDepartement
+end
+
+aggregation FormationChefFormation between
+    Formation[1]
+    ChefFormation[1]
+end
+
+--association DepartementProfesseur between
+--    Departement[1..*]role dpt
+--    Professeur[1..*]
+--end
+
+association MatiereProfesseur between
+    Matiere[1..*]
+    Professeur[1]
+end
+
+aggregation FormationClasse between
+    Formation[1]
+    Classe[2..*]
+end 
+
+aggregation DepartementFormation between 
+    Departement[1]
+    Formation[1..*]
+end
+
+association CoursSalle between 
+    Cours[1] role activite
+    Salle[1] role salle
+end
+
+aggregation ClasseEtudiant between 
+    Classe[1]
+    Etudiant[1..*]
+end
+
